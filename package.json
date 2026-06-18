@@ -1,0 +1,13 @@
+{
+  "name": "chalo-omkareshwar",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/start-all.mjs",
+    "start:user": "npm start --prefix backend",
+    "start:user-web": "npm start --prefix Frontend",
+    "start:admin": "npm start --prefix admin_backend",
+    "start:admin-web": "npm start --prefix admin_frontend"
+  }
+}

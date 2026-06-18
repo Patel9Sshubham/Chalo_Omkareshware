@@ -1,0 +1,50 @@
+import mongoose from "mongoose";
+
+const listingSchema = new mongoose.Schema(
+  {
+    type: { type: String, required: true, enum: ["hotel", "dharamshala", "temple", "restaurant", "route", "service"] },
+    name: { type: String, required: true, trim: true },
+    slug: { type: String, trim: true, index: true, unique: true, sparse: true },
+    category: { type: String, default: "" },
+    city: { type: String, default: "Omkareshwar" },
+    location: { type: String, default: "" },
+    description: { type: String, default: "" },
+    longDescription: { type: String, default: "" },
+    price: { type: Number, default: 0 },
+    priceRange: { type: String, default: "" },
+    numberOfRooms: { type: Number, default: 0 },
+    rating: { type: Number, default: 4.5 },
+    availabilityStatus: { type: String, default: "available" },
+    contactNumber: { type: String, default: "" },
+    whatsappNumber: { type: String, default: "" },
+    mapsLocation: { type: String, default: "" },
+    website: { type: String, default: "" },
+    address: { type: String, default: "" },
+    cuisineType: { type: String, default: "" },
+    averageCost: { type: String, default: "" },
+    openingTime: { type: String, default: "" },
+    closingTime: { type: String, default: "" },
+    history: { type: String, default: "" },
+    importance: { type: String, default: "" },
+    timings: { type: String, default: "" },
+    aartiTimings: { type: String, default: "" },
+    distanceFromTemple: { type: String, default: "" },
+    facilities: [{ type: String }],
+    amenities: [{ type: String }],
+    roomTypes: [{ type: String }],
+    nearbyAttractions: [{ type: String }],
+    nearbyHotels: [{ type: String }],
+    nearbyRestaurants: [{ type: String }],
+    nearbyTemples: [{ type: String }],
+    menuHighlights: [{ type: String }],
+    gallery: [{ type: String }],
+    featured: { type: Boolean, default: false },
+    imageUrl: { type: String, default: "" },
+    contact: { type: String, default: "" },
+    metaTitle: { type: String, default: "" },
+    metaDescription: { type: String, default: "" }
+  },
+  { timestamps: true }
+);
+
+export default mongoose.models.Listing || mongoose.model("Listing", listingSchema);
