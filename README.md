@@ -21,8 +21,17 @@ cd ../admin_frontend && npm i
 ```
 
 2. Create `.env` files from the provided `.env.example` files.
-   - If your MongoDB password has special characters like `@`, encode it as `%40` inside the URI.
-   - Put the same `MONGO_URI` in both `backend/.env` and `admin_backend/.env` if both websites should use the same database.
+   - If your MongoDB password has special characters like `@`, `:`, `/`, or `#`, encode them in `MONGO_URI`.
+   - If you do not want to encode credentials manually, use this format instead:
+
+```env
+MONGO_HOST=cluster0.example.mongodb.net
+MONGO_USER=your_username
+MONGO_PASSWORD=your_password
+MONGO_DB_NAME=chaloomkareshwar
+```
+
+   - Put the same database config in both `backend/.env` and `admin_backend/.env` if both websites should use the same database.
 
 3. Start the websites:
 
@@ -48,8 +57,8 @@ cd admin_frontend && npm start
 
 ## Default Admin
 
-- Email: `admin@chaloomkareshwar.com`
-- Password: `Admin@12345`
+The default admin credentials are read from `backend/.env` and `admin_backend/.env`.
+Check the `ADMIN_EMAIL` and `ADMIN_PASSWORD` values in those files before logging in.
 
 ## What is included
 

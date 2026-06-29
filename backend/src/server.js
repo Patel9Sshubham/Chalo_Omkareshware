@@ -16,7 +16,7 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 import seoRoutes from "./routes/seoRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
-import { connectDB } from "./config/db.js";
+import { connectDB, resolveMongoUri } from "./config/db.js";
 import { seedInitialData } from "./utils/seed.js";
 
 dotenv.config();
@@ -52,14 +52,8 @@ app.use((err, _req, res, _next) => {
 });
 
 async function start() {
-  if (!process.env.MONGO_URI) {
-    throw new Error("MONGO_URI is missing in backend/.env");
-  }
-
-  await connectDB(
-    process.env.MONGO_URI,
-    "mongodb://127.0.0.1:27017/chalo_omkareshwar"
-  );
+  const mongoUri = resolveMongoUri();
+  await connectDB(mongoUri);
   await seedInitialData();
   app.listen(port, () => {
     console.log(`Backend running on port ${port}`);

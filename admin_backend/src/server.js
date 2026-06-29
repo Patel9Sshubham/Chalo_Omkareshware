@@ -10,7 +10,7 @@ import blogRoutes from "./routes/blogRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
-import { connectDB } from "./config/db.js";
+import { connectDB, resolveMongoUri } from "./config/db.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -43,14 +43,8 @@ app.use((err, _req, res, _next) => {
 });
 
 async function start() {
-  if (!process.env.MONGO_URI) {
-    throw new Error("MONGO_URI is missing in admin_backend/.env");
-  }
-
-  await connectDB(
-    process.env.MONGO_URI,
-    "mongodb://127.0.0.1:27017/chalo_omkareshwar"
-  );
+  const mongoUri = resolveMongoUri();
+  await connectDB(mongoUri);
   app.listen(port, () => {
     console.log(`Admin backend running on port ${port}`);
   });
