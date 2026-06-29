@@ -3,6 +3,19 @@ import { useEffect, useState } from "react";
 import api from "./api/client";
 import { useAdminAuth } from "./context/AdminAuthContext";
 
+const MEDIA_ORIGIN =
+  import.meta.env.VITE_MEDIA_ORIGIN ||
+  (import.meta.env.DEV ? "http://localhost:4001" : "");
+
+function resolveMediaSrc(src = "") {
+  if (!src) return "";
+  if (/^(https?:|data:|blob:)/i.test(src)) return src;
+  if (src.startsWith("/uploads/") || src.startsWith("/images/")) {
+    return `${MEDIA_ORIGIN}${src}`;
+  }
+  return src;
+}
+
 function Shell({ children }) {
   const { user, logout } = useAdminAuth();
   const navigate = useNavigate();
@@ -912,7 +925,9 @@ function DashboardPage({ view = "dashboard" }) {
               e.target.value = "";
             }}
           />
-          {listingPreview.imageUrl ? <img className="listing-preview" src={listingPreview.imageUrl} alt="Listing preview" /> : null}
+          {listingPreview.imageUrl ? (
+            <img className="listing-preview" src={resolveMediaSrc(listingPreview.imageUrl)} alt="Listing preview" />
+          ) : null}
           <input
             placeholder="Meta Title"
             value={listingForm.metaTitle}
@@ -991,7 +1006,11 @@ function DashboardPage({ view = "dashboard" }) {
                 <strong>{item.featured ? "Featured" : "Normal"}</strong>
               </div>
               {item.imageUrl || item.gallery?.[0] ? (
-                <img className="listing-preview" src={item.imageUrl || item.gallery?.[0]} alt={item.name} />
+                <img
+                  className="listing-preview"
+                  src={resolveMediaSrc(item.imageUrl || item.gallery?.[0])}
+                  alt={item.name}
+                />
               ) : null}
               <h4>{item.name}</h4>
               <p>{item.location}</p>
@@ -1439,6 +1458,7 @@ function AdminWebsite() {
 
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/dashboard" element={<DashboardPage view="dashboard" />} />
       <Route path="/pricing" element={<DashboardPage view="pricing" />} />
@@ -1449,7 +1469,7 @@ function AdminWebsite() {
       <Route path="/tickets" element={<DashboardPage view="tickets" />} />
       <Route path="/listings" element={<DashboardPage view="listings" />} />
       <Route path="/settings" element={<SettingsPage />} />
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }

@@ -6,7 +6,7 @@ Separate user and admin websites for the Chalo Omkareshwar platform.
 
 - User frontend: `http://localhost:3000`
 - User backend: `http://localhost:4000`
-- Admin frontend: `http://localhost:5000`
+- Admin frontend: `http://localhost:5001`
 - Admin backend: `http://localhost:4001`
 
 ## Setup

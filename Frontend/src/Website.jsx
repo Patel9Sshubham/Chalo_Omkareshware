@@ -5,6 +5,19 @@ import driverApi from "./api/driverClient";
 import { useAuth } from "./context/AuthContext";
 import { useDriverAuth } from "./context/DriverAuthContext";
 
+const MEDIA_ORIGIN =
+  import.meta.env.VITE_MEDIA_ORIGIN ||
+  (import.meta.env.DEV ? "http://localhost:4000" : "");
+
+function resolveMediaSrc(src = "") {
+  if (!src) return "";
+  if (/^(https?:|data:|blob:)/i.test(src)) return src;
+  if (src.startsWith("/uploads/") || src.startsWith("/images/")) {
+    return `${MEDIA_ORIGIN}${src}`;
+  }
+  return src;
+}
+
 const navGroups = [
   {
     label: "Explore",
@@ -428,7 +441,7 @@ function Hero({ featured }) {
             <article className="mini-card mini-card-media" key={item._id || item.name}>
               <div className="mini-card-image">
                 {item.imageUrl || item.gallery?.[0] ? (
-                  <img src={item.imageUrl || item.gallery?.[0]} alt={item.name} />
+                  <img src={resolveMediaSrc(item.imageUrl || item.gallery?.[0])} alt={item.name} />
                 ) : (
                   <div className="mini-card-fallback">{String(item.name || "CO").slice(0, 2).toUpperCase()}</div>
                 )}
@@ -560,7 +573,7 @@ function CardGrid({ items, emptyText }) {
         <article className="info-card" key={item._id || item.name}>
           {item.imageUrl || item.gallery?.[0] ? (
             <div className="card-media">
-              <img src={item.imageUrl || item.gallery?.[0]} alt={item.name} />
+              <img src={resolveMediaSrc(item.imageUrl || item.gallery?.[0])} alt={item.name} />
             </div>
           ) : null}
           <div className="info-card-top">
@@ -600,7 +613,7 @@ function ListingCardGrid({
           <article className="info-card" key={item._id || item.name}>
             {item.imageUrl || item.gallery?.[0] ? (
               <div className="card-media">
-                <img src={item.imageUrl || item.gallery?.[0]} alt={item.name} />
+                <img src={resolveMediaSrc(item.imageUrl || item.gallery?.[0])} alt={item.name} />
               </div>
             ) : null}
             <div className="info-card-top">
@@ -1470,7 +1483,7 @@ function ListingDetailPage({ typeLabel }) {
               <div className="gallery-grid">
                 {(listing.gallery?.length ? listing.gallery : [listing.imageUrl].filter(Boolean)).map((src, index) => (
                   <div className="gallery-item" key={`${src}-${index}`}>
-                    <img src={src} alt={`${listing.name} ${index + 1}`} />
+                    <img src={resolveMediaSrc(src)} alt={`${listing.name} ${index + 1}`} />
                   </div>
                 ))}
                 {!((listing.gallery?.length ? listing.gallery : [listing.imageUrl].filter(Boolean)).length) ? (
